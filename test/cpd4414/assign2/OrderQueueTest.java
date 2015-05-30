@@ -98,6 +98,25 @@ public class OrderQueueTest {
         }
         assertTrue(catchexception);
     }
+    
+    @Test
+    public void testWhenNextorderExist() throws OrderQueue.NoCustomerException, OrderQueue.NoPurchasesException{
+        
+        OrderQueue orderQueue= new OrderQueue();
+        Order order= new Order("C0652113", "Pankaj");
+        order.addPurchase(new Purchase("PROD0004", 450));
+        
+         orderQueue.add(order);
+         Order order1= new Order("C06521132", "Singh");
+         order1.addPurchase(new Purchase("PROD00034", 4530));
+       
+        orderQueue.add(order1);
+        Order result= orderQueue.next();
+        assertEquals(result, order);
+        assertNull(result.getTimeReceived());
+        
+    }
+           
 }
     
 
