@@ -113,10 +113,21 @@ public class OrderQueueTest {
         orderQueue.add(order1);
         Order result= orderQueue.next();
         assertEquals(result, order);
-        assertNull(result.getTimeReceived());
+       assertNull(result.getTimeProcessed());
         
     }
            
+    
+     @Test
+    public void testWhennoNextorderExist() throws OrderQueue.NoCustomerException, OrderQueue.NoPurchasesException{
+        
+        OrderQueue orderQueue= new OrderQueue();
+        
+        Order result= orderQueue.next();
+        assertNull(result);
+       
+        
+    }
 }
     
 
