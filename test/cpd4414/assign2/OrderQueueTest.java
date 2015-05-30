@@ -54,8 +54,8 @@ public class OrderQueueTest {
     public void testWhenCustomerExistsAndPurchasesExistThenTimeReceivedIsNow() throws Exception {
         OrderQueue orderQueue = new OrderQueue();
         Order order = new Order("CUST00001", "ABC Cafeteria");
-        order.addPurchase(new Purchase("PROD0004", 450));
-        order.addPurchase(new Purchase("PROD0006", 250));
+        order.addPurchase(new Purchase(11, 450));
+        order.addPurchase(new Purchase(12, 250));
         orderQueue.add(order);
         
         long expResult = new Date().getTime();
@@ -68,8 +68,8 @@ public class OrderQueueTest {
         boolean catchexception= false;
          OrderQueue orderQueue = new OrderQueue();
         Order order = new Order("", "");
-        order.addPurchase(new Purchase("PROD0004", 450));
-        order.addPurchase(new Purchase("PROD0006", 250));
+        order.addPurchase(new Purchase(13, 450));
+        order.addPurchase(new Purchase(14, 250));
         try{
         orderQueue.add(order);
         }
@@ -104,11 +104,11 @@ public class OrderQueueTest {
         
         OrderQueue orderQueue= new OrderQueue();
         Order order= new Order("C0652113", "Pankaj");
-        order.addPurchase(new Purchase("PROD0004", 450));
+        order.addPurchase(new Purchase(15, 450));
         
          orderQueue.add(order);
          Order order1= new Order("C06521132", "Singh");
-         order1.addPurchase(new Purchase("PROD00034", 4530));
+         order1.addPurchase(new Purchase(13, 4530));
        
         orderQueue.add(order1);
         Order result= orderQueue.next();
@@ -126,6 +126,27 @@ public class OrderQueueTest {
         Order result= orderQueue.next();
         assertNull(result);
        
+        
+    }
+    
+    @Test 
+    public void testWhenTimerecievedisSetthanSettimeProccessedToNow() throws OrderQueue.NoCustomerException, OrderQueue.NoPurchasesException {
+        
+     OrderQueue orderQueue= new OrderQueue();
+        Order order= new Order("C0652113", "Pankaj");
+        order.addPurchase(new Purchase(23, 450));
+        
+         orderQueue.add(order);
+         Order order1= new Order("C06521132", "Singh");
+         order1.addPurchase(new Purchase(234, 4530));
+       
+        orderQueue.add(order1);
+        Order nextOrder= orderQueue.next();
+        orderQueue.process(nextOrder);
+                long expResult = new Date().getTime();
+        long result = order.getTimeReceived().getTime();
+        assertTrue(Math.abs(result - expResult) < 1000);
+
         
     }
 }
