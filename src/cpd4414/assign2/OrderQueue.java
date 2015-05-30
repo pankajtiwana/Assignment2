@@ -48,7 +48,7 @@ public class OrderQueue {
         return orderQueue.peek();//To change body of generated methods, choose Tools | Templates.
     }
 
-    void process(Order nextOrder) {
+    void process(Order nextOrder) throws TimeNullException {
         if(nextOrder.equals(next()))
         {
             boolean done=true;
@@ -65,7 +65,13 @@ public class OrderQueue {
             nextOrder.setTimeProcessed(new Date());
             }
             
-        }                             //To change body of generated methods, choose Tools | Templates.
+        } 
+        
+        else
+        {
+
+         throw new TimeNullException("no time recieved"); 
+        }//To change body of generated methods, choose Tools | Templates.
     }
 
    
@@ -81,6 +87,12 @@ public class OrderQueue {
     
         public NoPurchasesException(String msg) {
         
+            super(msg);
+        }
+    }
+    
+    public class TimeNullException extends Exception {
+        public TimeNullException(String msg) {
             super(msg);
         }
     }

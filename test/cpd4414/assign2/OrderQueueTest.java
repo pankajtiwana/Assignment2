@@ -17,6 +17,7 @@
 
 package cpd4414.assign2;
 
+import cpd4414.assign2.OrderQueue.TimeNullException;
 import java.util.Date;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -54,8 +55,8 @@ public class OrderQueueTest {
     public void testWhenCustomerExistsAndPurchasesExistThenTimeReceivedIsNow() throws Exception {
         OrderQueue orderQueue = new OrderQueue();
         Order order = new Order("CUST00001", "ABC Cafeteria");
-        order.addPurchase(new Purchase(11, 450));
-        order.addPurchase(new Purchase(12, 250));
+        order.addPurchase(new Purchase(11, 3));
+        order.addPurchase(new Purchase(12, 4));
         orderQueue.add(order);
         
         long expResult = new Date().getTime();
@@ -68,8 +69,8 @@ public class OrderQueueTest {
         boolean catchexception= false;
          OrderQueue orderQueue = new OrderQueue();
         Order order = new Order("", "");
-        order.addPurchase(new Purchase(13, 450));
-        order.addPurchase(new Purchase(14, 250));
+        order.addPurchase(new Purchase(13, 5));
+        order.addPurchase(new Purchase(14, 6));
         try{
         orderQueue.add(order);
         }
@@ -104,11 +105,11 @@ public class OrderQueueTest {
         
         OrderQueue orderQueue= new OrderQueue();
         Order order= new Order("C0652113", "Pankaj");
-        order.addPurchase(new Purchase(15, 450));
+        order.addPurchase(new Purchase(15, 6));
         
          orderQueue.add(order);
          Order order1= new Order("C06521132", "Singh");
-         order1.addPurchase(new Purchase(13, 4530));
+         order1.addPurchase(new Purchase(13, 7));
        
         orderQueue.add(order1);
         Order result= orderQueue.next();
@@ -130,15 +131,15 @@ public class OrderQueueTest {
     }
     
     @Test 
-    public void testWhenTimerecievedisSetthanSettimeProccessedToNow() throws OrderQueue.NoCustomerException, OrderQueue.NoPurchasesException {
+    public void testWhenTimerecievedisSetthanSettimeProccessedToNow() throws OrderQueue.NoCustomerException, OrderQueue.NoPurchasesException, TimeNullException {
         
      OrderQueue orderQueue= new OrderQueue();
         Order order= new Order("C0652113", "Pankaj");
-        order.addPurchase(new Purchase(23, 450));
+        order.addPurchase(new Purchase(23, 8));
         
          orderQueue.add(order);
          Order order1= new Order("C06521132", "Singh");
-         order1.addPurchase(new Purchase(234, 4530));
+         order1.addPurchase(new Purchase(234, 9));
        
         orderQueue.add(order1);
         Order nextOrder= orderQueue.next();
@@ -149,6 +150,26 @@ public class OrderQueueTest {
 
         
     }
+    
+    @Test 
+    public void testWhenTimerecievedisNull() throws OrderQueue.NoCustomerException, OrderQueue.NoPurchasesException, OrderQueue.TimeNullException {
+        boolean catchexception= false;
+     OrderQueue orderQueue= new OrderQueue();
+        Order order= new Order("C0652113", "Pankaj");
+        order.addPurchase(new Purchase(23, 8));
+        try{
+          orderQueue.process(order);   
+        }
+        catch(TimeNullException te)
+        {
+            catchexception=true;
+        }
+       
+              assertTrue(catchexception);
+
+        
+    }
+
 }
     
 
