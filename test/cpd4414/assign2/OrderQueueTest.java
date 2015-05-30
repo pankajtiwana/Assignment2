@@ -17,9 +17,6 @@
 
 package cpd4414.assign2;
 
-import cpd4414.assign2.OrderQueue;
-import cpd4414.assign2.Purchase;
-import cpd4414.assign2.Order;
 import java.util.Date;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -66,21 +63,41 @@ public class OrderQueueTest {
         assertTrue(Math.abs(result - expResult) < 1000);
     }
     @Test
-    public void WhenNoCustomerException()
+    public void testWhenNoCustomerException() throws OrderQueue.NoPurchasesException
     {
         boolean catchexception= false;
          OrderQueue orderQueue = new OrderQueue();
-        Order order = new Order(null , null);
+        Order order = new Order("", "");
         order.addPurchase(new Purchase("PROD0004", 450));
         order.addPurchase(new Purchase("PROD0006", 250));
         try{
         orderQueue.add(order);
         }
-        catch(Exception e)
+        catch(OrderQueue.NoCustomerException e)
         {
             catchexception=true;
         }
         assertTrue(catchexception);
     }
     
+    
+    @Test
+    public void testWhenNoPurchases() throws OrderQueue.NoCustomerException
+    {
+         boolean catchexception= false;
+         OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("bbh","njhbhj");
+        
+       
+        try{
+        orderQueue.add(order);
+        }
+        catch(OrderQueue.NoPurchasesException e)
+        {
+            catchexception=true;
+        }
+        assertTrue(catchexception);
+    }
 }
+    
+

@@ -28,12 +28,33 @@ import java.util.Queue;
 public class OrderQueue {
     Queue<Order> orderQueue = new ArrayDeque<>();
     
-    public void add(Order order) throws Exception {
+    public void add(Order order) throws NoCustomerException, NoPurchasesException {
         if(order.getCustomerId().isEmpty() && order.getCustomerName().isEmpty())
         {
-            throw new Exception();
+            throw new NoCustomerException("");
+        }
+        if(order.getListOfPurchases().isEmpty())
+            
+        {
+            throw new NoPurchasesException("");
         }
         orderQueue.add(order);
         order.setTimeReceived(new Date());
+    }
+    
+    public class NoCustomerException extends Exception {
+    
+        public NoCustomerException(String msg) {
+        
+            super(msg);
+        }
+    }
+    
+    public class NoPurchasesException extends Exception {
+    
+        public NoPurchasesException(String msg) {
+        
+            super(msg);
+        }
     }
 }
