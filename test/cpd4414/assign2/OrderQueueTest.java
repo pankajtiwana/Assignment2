@@ -28,7 +28,7 @@ import org.junit.Test;
 
 /**
  *
- * @author Len Payne <len.payne@lambtoncollege.ca>
+ * @author Pankaj
  */
 public class OrderQueueTest {
     
@@ -135,17 +135,17 @@ public class OrderQueueTest {
         
      OrderQueue orderQueue= new OrderQueue();
         Order order= new Order("C0652113", "Pankaj");
-        order.addPurchase(new Purchase(23, 8));
+        order.addPurchase(new Purchase(3, 8));
         
          orderQueue.add(order);
          Order order1= new Order("C06521132", "Singh");
-         order1.addPurchase(new Purchase(234, 9));
+         order1.addPurchase(new Purchase(2, 9));
        
         orderQueue.add(order1);
         Order nextOrder= orderQueue.next();
         orderQueue.process(nextOrder);
                 long expResult = new Date().getTime();
-        long result = order.getTimeReceived().getTime();
+        long result = order.getTimeProcessed().getTime();
         assertTrue(Math.abs(result - expResult) < 1000);
 
         
@@ -169,6 +169,31 @@ public class OrderQueueTest {
 
         
     }
+    
+    
+    @Test 
+    public void testWhentheOrderIsintactSettimeFullfilledtoNow() throws OrderQueue.NoCustomerException, OrderQueue.NoPurchasesException, TimeNullException {
+        
+     OrderQueue orderQueue= new OrderQueue();
+        Order order= new Order("C0652113", "Pankaj");
+        order.addPurchase(new Purchase(23, 8));
+        
+         orderQueue.add(order);
+         Order order1= new Order("C06521132", "Singh");
+         order1.addPurchase(new Purchase(234, 9));
+       
+        orderQueue.add(order1);
+        Order nextOrder= orderQueue.next();
+        orderQueue.process(nextOrder);
+        
+        orderQueue.fullfillOrder(nextOrder);
+        
+                long expResult = new Date().getTime();
+        long result = order.getTimeFulfilled().getTime();
+        assertTrue(Math.abs(result - expResult) < 1000);
+
+        
+    } 
 
 }
     

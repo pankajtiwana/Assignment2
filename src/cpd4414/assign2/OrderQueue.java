@@ -74,6 +74,15 @@ public class OrderQueue {
         }//To change body of generated methods, choose Tools | Templates.
     }
 
+    void fullfillOrder(Order nextOrder) {
+        if(orderList.contains(nextOrder))
+        {
+            nextOrder.setTimeFulfilled(new Date());
+        }
+    }
+
+   
+
    
     public class NoCustomerException extends Exception {
     
