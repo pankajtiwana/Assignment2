@@ -20,6 +20,9 @@ package cpd4414.assign2;
 import cpd4414.assign2.OrderQueue.NoTimeProcessedException;
 import cpd4414.assign2.OrderQueue.TimeNullException;
 import java.util.Date;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -234,6 +237,72 @@ public class OrderQueueTest {
               assertTrue(catchexception);
 
         
+    }
+    @Test
+    public void testReportwhenNoOrderinQueue(){
+        
+        
+        OrderQueue emptyQueue=new OrderQueue();
+        String expResult= "";
+        String result= emptyQueue.report();
+        assertEquals(expResult, result);
+    }
+    @Test
+    public void testWhenOrderFulfilledjeneratingReport() throws OrderQueue.NoCustomerException, OrderQueue.NoPurchasesException, TimeNullException, NoTimeProcessedException
+    {
+          OrderQueue orderQueue= new OrderQueue();
+        Order order= new Order("C0652113", "Pankaj");
+        order.addPurchase(new Purchase(23, 8));
+        
+         orderQueue.add(order);
+         Order order1= new Order("C06521132", "Singh");
+         order1.addPurchase(new Purchase(234, 9));
+       
+        orderQueue.add(order1);
+        Order nextOrder= orderQueue.next();
+        orderQueue.process(nextOrder);
+        
+        orderQueue.fullfillOrder(nextOrder);
+        JSONObject expResul=new JSONObject();
+        JSONArray array=new JSONArray();
+        JSONObject resultObject=new JSONObject();
+        resultObject.put("customerId", "C0652113");
+        resultObject.put("customerName", "Singh");
+         resultObject.put("timeReceived", new Date());
+         resultObject.put("timeProcessed", null);
+         resultObject.put("timeFulfilled", null);
+         JSONArray puchaseList= new JSONArray();
+         JSONObject purchaseObject= new JSONObject();
+         purchaseObject.put("productId", 23);
+         purchaseObject.put("quantity", 8);
+         puchaseList.add(purchaseObject);
+         resultObject.put("purchases", puchaseList);
+         resultObject.put("notes", null);
+         array.add(resultObject);
+          
+         
+         
+         
+         JSONObject resultObject1=new JSONObject();
+        resultObject1.put("customerId", "C06521131");
+        resultObject1.put("customerName", "Tiwana");
+         resultObject1.put("timeReceived", new Date());
+         resultObject1.put("timeProcessed", null);
+         resultObject1.put("timeFulfilled", null);
+         JSONArray puchaseList1= new JSONArray();
+         JSONObject purchaseObject1= new JSONObject();
+         purchaseObject1.put("productId", 234);
+         purchaseObject1.put("quantity", 9);
+         puchaseList1.add(purchaseObject);
+         resultObject1.put("purchases", puchaseList1);
+         resultObject1.put("notes", null);
+         array.add(resultObject1);
+         expResul.put("orders", array);
+         
+         
+         String result=orderQueue.report();
+         JSONObject obj=(JSONObject) JSONValue.parse(result);
+        assertEquals(expResul, obj);
     }
 
 
