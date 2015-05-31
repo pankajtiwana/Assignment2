@@ -302,6 +302,7 @@ public class OrderQueueTest {
          
          String result=orderQueue.report();
          JSONObject obj=(JSONObject) JSONValue.parse(result);
+         System.out.println(obj);
         assertEquals(expResul, obj);
     }
 

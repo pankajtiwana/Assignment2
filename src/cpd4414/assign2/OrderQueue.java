@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Queue;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -90,9 +92,22 @@ public class OrderQueue {
     }
 
     String report() {
-       String report="";
-       return report;
+        String output = "";
+        if (!(orderQueue.isEmpty() && orderList.isEmpty())) {
+            JSONObject obj = new JSONObject();
+            JSONArray orders = new JSONArray();
+            for (Order o : orderList) {
+                orders.add(o.toJSON());
+            }
+            for (Order o : orderQueue) {
+                orders.add(o.toJSON());
+            }
+            obj.put("orders", orders);
+            output = obj.toJSONString();
+        }
+        return output;
     }
+
 
    
 
