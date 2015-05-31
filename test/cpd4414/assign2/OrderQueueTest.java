@@ -17,6 +17,7 @@
 
 package cpd4414.assign2;
 
+import cpd4414.assign2.OrderQueue.NoTimeProcessedException;
 import cpd4414.assign2.OrderQueue.TimeNullException;
 import java.util.Date;
 import org.junit.After;
@@ -74,7 +75,7 @@ public class OrderQueueTest {
         try{
         orderQueue.add(order);
         }
-        catch(OrderQueue.NoCustomerException e)
+        catch(OrderQueue.NoCustomerException e )
         {
             catchexception=true;
         }
@@ -172,7 +173,7 @@ public class OrderQueueTest {
     
     
     @Test 
-    public void testWhentheOrderIsintactSettimeFullfilledtoNow() throws OrderQueue.NoCustomerException, OrderQueue.NoPurchasesException, TimeNullException {
+    public void testWhentheOrderIsintactSettimeFullfilledtoNow() throws OrderQueue.NoCustomerException, OrderQueue.NoPurchasesException, TimeNullException, NoTimeProcessedException {
         
      OrderQueue orderQueue= new OrderQueue();
         Order order= new Order("C0652113", "Pankaj");
@@ -194,6 +195,47 @@ public class OrderQueueTest {
 
         
     } 
+    
+    
+    @Test 
+    public void testWhenFulfillinfOrderandTimeReceivedisNull() throws OrderQueue.NoCustomerException, OrderQueue.NoPurchasesException, OrderQueue.TimeNullException, NoTimeProcessedException {
+        boolean catchexception= false;
+     OrderQueue orderQueue= new OrderQueue();
+        Order order= new Order("C0652113", "Pankaj");
+        order.addPurchase(new Purchase(23, 8));
+        try{
+          orderQueue.fullfillOrder(order);   
+        }
+        catch(TimeNullException te)
+        {
+            catchexception=true;
+        }
+       
+              assertTrue(catchexception);
+
+        
+    }
+    
+    @Test 
+    public void testWhenFulfillinfOrderandTimeProcessedisNull() throws OrderQueue.NoCustomerException, OrderQueue.NoPurchasesException, OrderQueue.TimeNullException {
+        boolean catchexception= false;
+     OrderQueue orderQueue= new OrderQueue();
+        Order order= new Order("C0652113", "Pankaj");
+        order.addPurchase(new Purchase(23, 8));
+        orderQueue.add(order);
+        try{
+          orderQueue.fullfillOrder(order);  
+        }
+        catch(NoTimeProcessedException te)
+        {
+            catchexception=true;
+        }
+       
+              assertTrue(catchexception);
+
+        
+    }
+
 
 }
     

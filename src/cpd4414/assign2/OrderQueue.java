@@ -74,7 +74,15 @@ public class OrderQueue {
         }//To change body of generated methods, choose Tools | Templates.
     }
 
-    void fullfillOrder(Order nextOrder) {
+    void fullfillOrder(Order nextOrder) throws TimeNullException, NoTimeProcessedException {
+        if(nextOrder.getTimeReceived()==null)
+        {
+            throw new TimeNullException("NO GIVEN TIME");
+        }
+        if(nextOrder.getTimeProcessed() == null)
+        {
+            throw new NoTimeProcessedException("no time processed");
+        }
         if(orderList.contains(nextOrder))
         {
             nextOrder.setTimeFulfilled(new Date());
@@ -102,6 +110,12 @@ public class OrderQueue {
     
     public class TimeNullException extends Exception {
         public TimeNullException(String msg) {
+            super(msg);
+        }
+    }
+    
+      public class NoTimeProcessedException extends Exception {
+        public NoTimeProcessedException(String msg) {
             super(msg);
         }
     }
